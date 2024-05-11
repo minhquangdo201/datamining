@@ -2,6 +2,7 @@ import datetime
 import re
 from flask import Flask, request, jsonify
 import pickle
+from flask_cors import CORS
 from pymongo import MongoClient
 import nltk
 nltk.download('punkt')
@@ -11,17 +12,18 @@ from nltk.stem.porter import PorterStemmer
 import string
 
 app = Flask(__name__)
+cors = CORS(app)
 client = MongoClient('mongodb://localhost:27017/')
 db = client['spam_sms']
 collection = db['message_history']
 
 ps = PorterStemmer()
 
-cv_naive_bayes = pickle.load(open('datamining/backend/cv_naive_bayes.pkl', 'rb'))
-naive_bayes_model = pickle.load(open('datamining/backend/model_naive_bayes.pkl', 'rb'))
+cv_naive_bayes = pickle.load(open('backend/cv_naive_bayes.pkl', 'rb'))
+naive_bayes_model = pickle.load(open('backend/model_naive_bayes.pkl', 'rb'))
 
-cv_svm = pickle.load(open('datamining/backend/cv_svm.pkl', 'rb'))
-svm_model = pickle.load(open('datamining/backend/model_svm.pkl', 'rb'))
+cv_svm = pickle.load(open('backend/cv_svm.pkl', 'rb'))
+svm_model = pickle.load(open('backend/model_svm.pkl', 'rb'))
 
 def transform_text(text):
     ps = PorterStemmer()
@@ -59,22 +61,44 @@ def predict_svm(text):
     prediction = svm_model.predict(text)
     return prediction[0]
 
+@app.route('/predict', methods=['POST'])
+def predict():
+    data = request.get_json()
+    message = data['message']
+    model = data['model']
+    
+    if model == 'naive bayes':
+        label = predict_bayes(message)
+    elif model == 'svm':
+        label = predict_svm(message)
+    else:
+        label = -1
+    
+    data['label'] = label_to_string(label)
+    data['createTime'] = datetime.datetime.now().isoformat() 
+    collection.insert_one(data)
+    
+    return jsonify({'prediction': label_to_string(label), 'model': model, 'message': message})
+    
 
 @app.route('/predictBayes', methods=['POST'])
 def naive_bayes_predict():
-    data = request.get_json()
-    message = data['message']
-    label = predict_bayes(message)
-    createTime = datetime.datetime.now()
-    label_str = label_to_string(label) 
+    try:
+        data = request.get_json()
+        message = data['message']
+        label = predict_bayes(message)
+        createTime = datetime.datetime.now()
+        label_str = label_to_string(label) 
     
-    data['label'] = label_str
-    data['createTime'] = createTime
-    data['model'] = 'naive_bayes'
+        data['label'] = label_str
+        data['createTime'] = createTime
+        data['model'] = 'naive_bayes'
     
-    collection.insert_one(data)
+        collection.insert_one(data)
     
-    return jsonify({'prediction': label_str})
+        return jsonify({'prediction': label_str})
+    except:
+        return jsonify({'error': 'error'})
 
 @app.route('/predictSVM', methods=['POST'])
 def svm_predict():
@@ -100,5 +124,6 @@ def get_history():
         message.pop('_id')
         history.append(message)
     return jsonify(history)
+
 if __name__ == '__main__':
     app.run(debug=True)

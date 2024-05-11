@@ -1,0 +1,18 @@
+body {
+  background: rgb(221, 156, 85);
+  background: linear-gradient(90deg, rgba(221, 156, 85, 1) 0%, rgba(230, 119, 80, 1) 50%, rgba(254, 102, 165, 1) 100%);
+}
+
+.form-outer {
+  background: rgb(255, 255, 255, 0.2)
+}
+
+.check-button{
+  background: rgb(221, 156, 85);
+  background: linear-gradient(90deg, rgba(221, 156, 85, 1) 0%, rgba(230, 119, 80, 1) 50%, rgba(254, 102, 165, 1) 100%);
+}
+
+.history:hover {
+  cursor: pointer;
+  color: rgb(3, 3, 3)
+}
