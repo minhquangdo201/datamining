@@ -22,7 +22,7 @@ const App = () => {
         return 'Naive Bayes';
       case 'svm':
         return 'SVM';
-      default:
+      case 'backpropagation':
         return 'Backpropagation';
     }
   }
@@ -109,7 +109,7 @@ const App = () => {
                 </div>
                 {/*body*/}
                 <div className="relative p-6 flex-auto overflow-y-auto max-h-60 ">
-                  <table className='table-auto w-full text-base text-left rtl:text-right text-gray-500 dark:text-gray-600'>
+                  <table className='table-auto w-full text-base text-left rtl:text-right text-black dark:text-black'>
                     <thead className='text-xs text-gray-700 uppercase'>
                       <tr>
                         <th className="w-1/12 align-top">Id</th>
@@ -122,8 +122,8 @@ const App = () => {
                       {history.map((item, index) => (
                         <tr className='bg-white border-b hover:bg-gray-200' key={index}>
                           <td className=' align-top'>{index + 1}</td>
-                          <td className="break-word align-top">{item.message}</td>
-                          <td className='align-top'>{item.label}</td>
+                          <td className="break-word align-top font-semibold">{item.message}</td>
+                          {item.label === "ham" ? <td className='align-top text-green-600 font-bold'>{item.label}</td> : <td className='align-top text-red-600 font-bold'>{item.label}</td>}
                           <td className='align-top'>{getModelName(item.model)}</td>
                         </tr>
                       ))}
