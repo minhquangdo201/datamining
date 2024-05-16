@@ -45,11 +45,11 @@ const App = () => {
       if (response) {
         console.log(response);
         if (response.prediction === "spam") {
-          alert("This is a spam message")
+          alert("SPAM ALERT! This is a spam message")
           return;
         } 
         if(response.prediction === "ham") {
-          alert("This isn't a spam message")
+          alert("NO SPAM! This is not a spam message")
           return;
         }
         else {
