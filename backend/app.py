@@ -109,7 +109,7 @@ def get_history():
         for message in messages:
             message.pop('_id')
             history.append(message)
-            history.reverse()
+            history = sorted(history, key=lambda x: x['createTime'], reverse=True)
         return jsonify(history)
     except:
         return jsonify({'error': 'An error occurred'})

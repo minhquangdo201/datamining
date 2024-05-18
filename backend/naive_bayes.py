@@ -1,3 +1,4 @@
+import re
 import pandas as pd
 import nltk
 from nltk.corpus import stopwords
@@ -17,6 +18,7 @@ spam_df = spam_df.drop_duplicates(keep='first')
 ps = PorterStemmer()
 
 def transform_text(text):
+    text = re.sub(pattern='[^a-zA-Z]', repl=' ', string=text)
     text = text.lower() #convert to lowercase
     text = nltk.word_tokenize(text) #tokenize the text
     y = []

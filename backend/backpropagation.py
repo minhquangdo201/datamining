@@ -9,6 +9,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
+from sklearn.metrics import classification_report, accuracy_score
 import joblib
 
 sms = pd.read_csv('backend\\spam.csv', encoding='latin-1')
@@ -38,6 +39,13 @@ model.add(Dense(units=10, activation='relu'))
 model.add(Dense(units=1, activation='sigmoid'))
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 model.fit(X_train, y_train, epochs=10)
+
+#in ra độ chính xác và báo cáo phân loại
+y_pred = model.predict(X_test)
+y_pred = (y_pred > 0.5)
+
+print(classification_report(y_test, y_pred))
+print(accuracy_score(y_test, y_pred))
 
 model.save('backend\\model_backpropagation.h5')
 joblib.dump(vectorizer, 'backend\\cv_backpropagation.pkl')
