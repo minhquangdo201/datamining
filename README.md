@@ -1,15 +1,16 @@
 # Ứng Dụng Phân Loại Tin Nhắn Rác
+**LƯU Ý:**  
+Hãy sửa lại các đường dẫn sao cho đúng vì mỗi thiết bị cách đọc đường dẫn sẽ khác nhau nên có thể sẽ lỗi vì sai đường dẫn. Cần cài đặt đầy đủ các thư viện Python cần thiết, cài đặt Node.js và MongoDB.
+
 
 ## Giới thiệu
 Ứng dụng này bao gồm source code của hai phần: backend và frontend.
 
 - **Thư mục backend**: Bao gồm dữ liệu được lưu trong file `spam.csv`, các mô hình học máy và file `app.py` để chạy máy chủ.
 - **Thư mục frontend**: Bao gồm code để chạy giao diện người dùng.
+- **Mô hình**: Các file `naive_bayes.py`, `svm.py`, `backpropagation.py` dùng để huấn luyện các mô hình.
 
 ## Hướng dẫn khởi động
-
-**LƯU Ý:**  
-Hãy sửa lại các đường dẫn sao cho đúng vì mỗi thiết bị cách đọc đường dẫn sẽ khác nhau nên có thể sẽ lỗi vì sai đường dẫn. Cần cài đặt đầy đủ các thư viện Python cần thiết, cài đặt Node.js và MongoDB.
 
 1. **Bước 1**: Tải trực tiếp hoặc clone project GitHub về máy tính cá nhân.
 
